@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Web_Template_2023</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      height: 100%;
+      width: 100%;
+      text-align: center;
+	  background-color: #000;
+    }
+
+    #unity-canvas {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+    }
+
+    #unity-loading-bar {
+      position: absolute;
+      left: 30%;
+      top: 50%;
+      width: 40%;
+      height: 20px;
+      background-color: #fff;
+      border: 5px solid #ccc;
+      border-radius: 20px;
+    }
+
+    #unity-progress-bar {
+      position: absolute;
+      left: 0%;
+      top: 0%;
+      width: 1%;
+      height: 100%;
+      background-color: #ef6817;
+      border-radius: 20px;
+      transition: 400ms linear;
+    }
+	#games4king{
+       position: absolute;
+      left: 0%;
+      top: 15%;
+      width: 100%;
+      height: 25%;
+      object-fit: contain;
+    }
+	#android{
+       position: absolute;
+      left: 0%;
+      bottom: 15%;
+      width: 100%;
+      height: 25%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+
+  <img src="games4king.png" id="games4king">
+  <img src="android.png" id="android">
+  <canvas id="unity-canvas"></canvas>
+  <div id="unity-loading-bar">
+    <div id="unity-progress-bar">
+    </div>
+  </div>
+  <script src="Build/Web2.loader.js"></script>
+  <script>
+    const maxPixelRatioMobile = 2.0;
+    const maxPixelRatioDesktop = 1.5;
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var maxDevicePixelRatio = isMobile? maxPixelRatioMobile: maxPixelRatioDesktop;
+    var pixelRatio = Math.min(window.devicePixelRatio, maxDevicePixelRatio);
+
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/Web2.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/Web2.data.unityweb",
+      frameworkUrl: buildUrl + "/Web2.framework.js.unityweb",
+      codeUrl: buildUrl + "/Web2.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "Web_Template_2023",
+      productVersion: "1.0",
+      devicePixelRatio: pixelRatio
+    };
+
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingBar = document.querySelector("#unity-loading-bar");
+    var progressBar = document.querySelector("#unity-progress-bar");
+	var game_mc;
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function() {
+      createUnityInstance(canvas, config, function(progress) {
+        progressBar.style.width = 100 * progress + "%";
+      }).then(function(unityInstance) 
+	  {
+		game_mc=unityInstance;
+        loadingBar.style.display = "none";
+      }).catch(function(message) {
+        alert(message);
+      });
+    };
+    document.body.appendChild(script);
+	function gd_ad_call()
+	{
+	
+	}
+	function pause_status(pause_val)
+	{
+		game_mc.SendMessage("Canvas", "game_pause_status", pause_val);
+	}
+	function game_music_control(music)
+	{
+		game_mc.SendMessage("Canvas", "game_music_control", music);
+	}
+	function game_vfx_control(vfx)
+	{
+		game_mc.SendMessage("Canvas", "game_vfx_control",vfx);
+	}
+	function coin_update_fun(coin)
+	{
+		game_mc.SendMessage("Canvas", "android_coin_update", coin);
+	}
+	function move_update_fun1(val1)
+	{
+		game_mc.SendMessage("Canvas", "move_val_fun1", val1);
+	}
+	function move_update_fun2(val2)
+	{
+		game_mc.SendMessage("Canvas", "move_val_fun2", val2);
+	}
+	function move_update_fun3(val3)
+	{
+		game_mc.SendMessage("Canvas", "move_val_fun3", val3);
+	}
+
+	function back_to_game()
+	{
+		game_mc.SendMessage("Canvas", "back_to_game");
+	}
+	function gravity_strfun(gravity_str)
+	{
+		game_mc.SendMessage("Canvas", "gravity_get_strfun", gravity_str);
+	}
+	function gravity_status(gravity_val)
+	{
+		game_mc.SendMessage("Canvas", "gravity_get_fun", gravity_val);
+	}
+	function gravity_fn()
+	{
+		game_mc.SendMessage("Canvas", "gra_fun");
+	}
+  </script>
+</body>
+
+</html>

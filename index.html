@@ -116,6 +116,18 @@
       });
     };
     document.body.appendChild(script);
+	  // Listen for messages from the iframe
+	window.addEventListener('message', function(event) {
+	  // If the message is a request for the grandparent domain name
+	  if (event.data && event.data.type === 'getGrandparentDomain') {
+	    // Get the domain name of the grandparent window
+	    var grandparentDomain = window.parent.location.hostname;
+
+	    // Send a message to the iframe containing the grandparent domain name
+	    event.source.postMessage({ type: 'grandparentDomain', domain: grandparentDomain }, event.origin);
+	  }
+	});
+
 	function gd_ad_call()
 	{
 	
